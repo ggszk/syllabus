@@ -22,7 +22,7 @@ def write_cells(out_sheet, in_cells, out_map, offset):
     return
 
 # 入出力ファイル
-in_filename = "syl_org.xlsx"
+in_filename = "./temp/シラバスまとめ　情報（教育課程等の概要の順番） 59.xlsx"
 out_filename = "syl_out.xlsx"
 
 # Excelの中での読み書きのセル位置情報
@@ -94,15 +94,16 @@ out_map = [
 in_wb = openpyxl.load_workbook(in_filename)
 out_wb = openpyxl.load_workbook(out_filename)
 
-# 科目
-#kamoku_list = ['確率論', 'データベースの基礎']
-kamoku_list = ['確率論']
+# 出力テンプレートシート
+temp_sheet = out_wb['template']
 
 # セルの読み書き
-for kamoku in kamoku_list :
-    # シート
-    in_sheet = in_wb[kamoku]
-    out_sheet = out_wb[kamoku]
+for in_sheet in in_wb :
+    # シート名が科目名
+    kamoku = in_sheet.title
+    # テンプレートシートをコピーしてリネーム
+    out_sheet = out_wb.copy_worksheet(temp_sheet)
+    out_sheet.title = kamoku
 
     # オフセットは，「授業科目」が左上(1,1)の位置からいくつずれているか（ずれなしは(0,0)）
     # セルを読む：入力
